@@ -1,0 +1,14 @@
+{
+  "name": "SmartTower",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rpi_server.js",
+  "author": "Artjom Siebert",
+  "license": "ISC",
+  "dependencies": {
+        "express": "~4.0.0",
+        "mongoose": "~3.6.13",
+        "body-parser": "~1.0.1",
+	"net": "1.0.2"
+    }
+}
