@@ -50,18 +50,38 @@ router.get('/network/open', function(req, res) {
 	});
 });
 
-router.get('/hue/state/:nodeid/:endpoint/:sendmode/:value', function(req, res) {
-	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
-			+ req.params.value + "/" + req.params.sendmode;
-	res.json({
-		message : 'HueState/' + payload
-	});
+router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
+		function(req, res) {
 
-	client.write('HueState/' + payload);
+			var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
+					+ req.params.value + "/" + req.params.sendmode;
 
-	// Write a message to the socket as soon as the client is connected, the
-	// server will receive it as message from the client
-});
+			if (req.params.state === "color") {
+				client.write('HueColor/' + payload);
+				res.json({
+					message : 'HueColor/' + payload
+				});
+			} else if (req.params.state === "state") {
+				client.write('HueState/' + payload);
+				res.json({
+					message : 'HueState/' + payload
+				});
+			} else if (req.params.state === "level") {
+				client.write('HueLevel/' + payload);
+				res.json({
+					message : 'HueLevel/' + payload
+				});
+			}else if (req.params.state === "saturation") {
+				client.write('HueSaturation/' + payload);
+				res.json({
+					message : 'HueSaturation/' + payload
+				});
+			}
+
+			// Write a message to the socket as soon as the client is connected,
+			// the
+			// server will receive it as message from the client
+		});
 
 router.get('/hue/:id', function(req, res) {
 	res.json({
