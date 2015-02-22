@@ -50,10 +50,15 @@ router.get('/network/open', function(req, res) {
 	});
 });
 
-router.get('/hue', function(req, res) {
+router.get('/hue/state/:nodeid/:endpoint/:sendmode/:value', function(req, res) {
+	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
+			+ req.params.value + "/" + req.params.sendmode;
 	res.json({
-		message : 'Get all hues in network'
+		message : 'HueState/' + payload
 	});
+
+	client.write('HueState/' + payload);
+
 	// Write a message to the socket as soon as the client is connected, the
 	// server will receive it as message from the client
 });
@@ -64,7 +69,7 @@ router.get('/hue/:id', function(req, res) {
 	});
 });
 
-router.get('/socket/:nodeid/:endpoint/:value/:sendmode', function(req, res) {
+router.get('/socket/:nodeid/:endpoint/:sendmode/:value', function(req, res) {
 	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 			+ req.params.value + "/" + req.params.sendmode;
 	res.json({
