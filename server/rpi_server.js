@@ -42,13 +42,17 @@ router.get('/network/open',function(req,res){
 router.get('/hue',function(req,res){
 	res.json({message: 'Get all hues in network'});
 	    // Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
-	 console.log('Write to Socket');
-    client.write('I am Chuck Norris!');
-
 });
 
 router.get('/hue/:id',function(req,res){
 	res.json({message: 'Get information of hue with id: ' +req.params.id});
+});
+
+router.get('/socket/:nodeid/:endpoint/:value',function(req,res){
+	//res.json({message: 'SocketState'});
+	var payload = req.params.nodeid + req.params.endpoint + req.params.value;
+	
+	client.write('SocketState/'+payload);
 });
 
 client.connect(PORT, HOST, function() {
@@ -59,7 +63,6 @@ client.connect(PORT, HOST, function() {
 // Add a 'data' event handler for the client socket
 // data is what the server sent to this socket
 client.on('data', function(data) {
-    
     console.log('DATA: ' + data);
     // Close the client socket completely
    // client.destroy();
