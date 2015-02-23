@@ -3,32 +3,32 @@ var app = express(); // define our app using express
 var bodyParser = require('body-parser');
 var net = require('net');
 var Forecast = require('forecast');
+var cors = require('express-cors')
+
 var HOST = '127.0.0.1';
 var PORT = 51717;
 var client = new net.Socket(); // connect to Hardware-Layer
 
 // Initialize
 var forecast = new Forecast({
-  service: 'forecast.io',
-  key: '88e750b2992857ef17c874e812bc4ad0',
-  units: 'celcius', // Only the first letter is parsed
-  cache: true,      // Cache API requests?
-  ttl: {            // How long to cache requests. Uses syntax from moment.js:
-					// http://momentjs.com/docs/#/durations/creating/
-    minutes: 27,
-    seconds: 45
-    }
-});
- 
- 
-// Retrieve weather information, ignoring the cache
-forecast.get([50.5833, 8.65], true, function(err, weather) {
-  if(err) return console.dir(err);
-  console.dir(weather);
+	service : 'forecast.io',
+	key : '88e750b2992857ef17c874e812bc4ad0',
+	units : 'celcius', // Only the first letter is parsed
+	cache : true, // Cache API requests?
+	ttl : { // How long to cache requests. Uses syntax from moment.js:
+		// http://momentjs.com/docs/#/durations/creating/
+		minutes : 27,
+		seconds : 45
+	}
 });
 
+app.use(cors({
+    allowedOrigins: [
+        'http://localhost:8001'
+    ]
+}))
 
-  app.use(bodyParser.urlencoded({
+app.use(bodyParser.urlencoded({
 	extended : true
 }));
 app.use(bodyParser.json());
@@ -42,6 +42,21 @@ router.use(function(req, res, next) {
 	// do logging
 	console.log('Received Request', req.query);
 	next(); // make sure we go to the next routes and don't stop here
+});
+
+// Retrieve weather information, ignoring the cache
+forecast.get([ 50.5833, 8.65 ], true, function(err, weather) {
+	if (err)
+		return console.dir(err);
+	console.dir(weather);
+});
+
+router.get('/weather', function(req, res) {
+	forecast.get([ 50.5833, 8.65 ], true, function(err, weather) {
+		if (err)
+			return console.dir(err);
+		res.json({weather: weather.currently});
+	});
 });
 
 router.get('/', function(req, res) {
@@ -65,6 +80,12 @@ router.get('/network/scan', function(req, res) {
 router.get('/network/open', function(req, res) {
 	res.json({
 		message : 'Open network information'
+	});
+});
+
+router.get('/hue', function(req, res) {
+	res.json({
+		message : 'List of hues'
 	});
 });
 

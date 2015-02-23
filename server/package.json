@@ -8,8 +8,9 @@
   "dependencies": {
     "body-parser": "~1.0.1",
     "express": "~4.0.0",
+    "express-cors": "0.0.3",
     "forecast": "^0.2.1",
     "mongoose": "~3.6.13",
-    "net": "1.0.2"
+    "net": "^1.0.2"
   }
 }
