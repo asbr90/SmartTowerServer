@@ -6,6 +6,9 @@
 .cart-item.ng-enter-active {
   background-color: white;
 }
+.other-color{
+    background: #99CCFF
+ }
 
 *{
 	margin:0;
@@ -68,7 +71,7 @@ nav a:last-child{
 }
 
 nav.home .home,
-nav.networks .networks,
+nav.plug .plug,
 nav.waether .waether,
 nav.hue .hue{
 	background-color:#F00A0A;

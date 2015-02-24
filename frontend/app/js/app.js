@@ -8,7 +8,7 @@ angular.module('SmartTower', ['ngAnimate','ngRoute',  'HueServices'])
           templateUrl: 'partials/hues.html',
           controller: 'HueListCtrl' 
         })
-      .when('/network', { template: 'Network Settings' })
+      .when('/socket', { templateUrl: 'partials/SocketPlug.html' })
       .when('/weather', { templateUrl: 'partials/weather.html' })
       .otherwise({ redirectTo: '/'});
   }).controller('HueListCtrl', function($scope, $http) {
