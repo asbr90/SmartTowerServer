@@ -23,14 +23,13 @@ var forecast = new Forecast({
 });
 
 app.use(cors({
-    allowedOrigins: [
-        'http://localhost:8001'
-    ]
+	allowedOrigins : [ 'http://localhost:8001' ]
 }))
 
 app.use(bodyParser.urlencoded({
 	extended : true
 }));
+
 app.use(bodyParser.json());
 
 var port = process.env.PORT || 3000; // set our port
@@ -55,7 +54,9 @@ router.get('/weather', function(req, res) {
 	forecast.get([ 50.5833, 8.65 ], true, function(err, weather) {
 		if (err)
 			return console.dir(err);
-		res.json({weather: weather.currently});
+		res.json({
+			weather : weather.currently
+		});
 	});
 });
 
@@ -124,14 +125,32 @@ router.get('/hue/:id', function(req, res) {
 	});
 });
 
-router.get('/socket/:nodeid/:endpoint/:sendmode/:value', function(req, res) {
+router.get('/devices', function(req, res) {
+	var nodeID;
+	var deviceID;
+	var endpoint;
+	var cmd;
+	
+	client.write('UpdateList');
+	
+	client.on('data', function(data) {
+		console.log('DATA: ' + data);
+		var values = String(data);
+	
+		});
+});
+
+router.get('/socket/:state/:nodeid/:endpoint/:sendmode/:value', function(req,
+		res) {
 	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 			+ req.params.value + "/" + req.params.sendmode;
-	res.json({
-		message : 'SocketState/' + payload
-	});
 
-	client.write('SocketState/' + payload);
+	if (req.params.state === "info") {
+		client.write('SocketInformation/' + payload);
+		// need response from socket
+	} else if (req.params.state === "set") {
+		client.write('SocketState/' + payload);
+	}
 
 });
 
@@ -140,12 +159,7 @@ client.connect(PORT, HOST, function() {
 });
 // Add a 'data' event handler for the client socket
 // data is what the server sent to this socket
-/*
- * client.on('data', function(data) { console.log('DATA: ' + data); // Close the
- * client socket completely // client.destroy();
- * 
- * });
- */
+
 // Add a 'close' event handler for the client socket
 client.on('close', function() {
 	console.log('Connection closed');
