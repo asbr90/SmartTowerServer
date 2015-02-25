@@ -126,40 +126,38 @@ router.get('/hue/:id', function(req, res) {
 });
 
 router.get('/devices', function(req, res) {
-	
 	client.write('UpdateList');
+	console.log('GET /devices');
 	
 	client.on('data', function(data) {
-		console.log('DATA: ' + data);
 		var values = String(data);
 		var a = values.split("\r\n");
 		var jsonResponse = String("[");
-		console.log(jsonResponse);
 
-		for(var i = 0; i < a.length-1; i++){
+		for (var i = 0; i < a.length - 1; i++) {
 			var result = a[i].split("/");
-			console.log('res: ',res);
 			var nodeID = result[1].split(":")[0];
 			var deviceID = result[1].split(":")[1];
 			var endpoint = result[1].split(":")[2];
 
-			jsonResponse = jsonResponse.concat("{ \"nodeid\": \""+nodeID+"\"");
-			jsonResponse = jsonResponse.concat(", \"endpoint\": \""+result[1].split(":")[2]+"\"");
-			jsonResponse = jsonResponse.concat(" ,\"deviceid\": \""+deviceID+ "\"}");
-			if((i+1) < (a.length-1))
+			jsonResponse = jsonResponse.concat("{ \"nodeid\": \"" + nodeID
+					+ "\"");
+			jsonResponse = jsonResponse.concat(", \"endpoint\": \""
+					+ result[1].split(":")[2] + "\"");
+			jsonResponse = jsonResponse.concat(" ,\"deviceid\": \"" + deviceID
+					+ "\"}");
+			if ((i + 1) < (a.length - 1))
 				jsonResponse = jsonResponse.concat(",");
 
-			console.log('nodeid ', nodeID);
-			console.log('deviceID ', deviceID);
-			console.log('endpoint', endpoint);
-			
-			}
-			jsonResponse = jsonResponse.concat("]");
-			console.log(JSON.parse(jsonResponse));
-			//console.log(res);
-			//console.log( JSON.parse("[{ \"nodeid\": \"3A4F\", \"endpoint\": \"01\" ,\"deviceid\": \"0009\"},{ \"nodeid\": \"3A4F\", \"endpoint\": \"01\" ,\"deviceid\": \"0009\"},]"));
-		//	res.json(JSON.parse(jsonResponse));
-		});
+		}
+
+		console.log('JSON',jsonResponse);
+		jsonResponse = jsonResponse.concat("]");
+		//TODO asnychrone response not work. Need it for dynmical calls
+//		res.json(JSON.parse(jsonResponse));
+	});
+	var DefjsonResponse = " [{ \"nodeid\": \"05A3\", \"endpoint\": \"0B\" ,\"deviceid\": \"0210\"}]";//Default Values
+	res.json(JSON.parse(DefjsonResponse));
 });
 
 router.get('/socket/:state/:nodeid/:endpoint/:sendmode/:value', function(req,
