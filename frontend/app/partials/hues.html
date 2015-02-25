@@ -2,7 +2,7 @@
  <div  ng-controller="HueListCtrl">
      <div class="container">
 
-<div ng-hide="hues" class="ng-hide">
+<div ng-hide="hues" class="ng-hide" ng-Controller="SendHueStateCtrl">
   <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Hint</h3>
@@ -38,12 +38,13 @@
 </table>
  </div>
   </div>
-<div class="panel panel-default" >
+<div class="panel panel-default" ng-show="hues" >
   <div class="panel-heading">
-    <h3 class="panel-title">Change State of Hue</h3>
+    <h3 class="panel-title">Change State of Device</h3>
   </div>
-  
-<div ng-controller="SendHueStateCtrl" >
+  <div class="panel-body">
+
+<p>Control Device</p> <div ng-controller="SendHueStateCtrl" >
    <div class="row" >
   <div class="col-lg-2">
     <div class="input-group">
@@ -56,21 +57,78 @@
     <div class="input-group">
       <span class="input-group">
      <input type="text" class="form-control" placeholder="Endpoint" ng-model="network.endpoint">
-       <pre>master = {{nodeid }}</pre>
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
- 
-</div><!-- /.row -->
+   <div>
+ <button type="button" class="btn btn-success" ng-click="takeOn(network)">ON </button>
+  <button type="button" class="btn btn-danger" ng-click="takeOff(network)">Off </button>
+</div>
+  </div><!-- /.row -->
+
+  <br>
+  <p>Control Group<p> <div ng-controller="SendToGroupCtrl" >
+   <div class="row" >
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+         <input type="text" class="form-control" placeholder="Noide ID" ng-model="network.nodeid">
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+     <input type="text" class="form-control" placeholder="Endpoint" ng-model="network.endpoint">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <button type="button" class="btn btn-success" ng-click="takeOn(network)">Group on </button>
+  <button type="button" class="btn btn-danger" ng-click="takeOff(network)">Group off </button> 
+  </div><!-- /.row -->
+</br>
 
 <br>
-  <button type="button" class="btn btn-success" ng-click="takeOn(network)">ON </button>
-  <button type="button" class="btn btn-danger" ng-click="takeOff(network)">Off </button>
+  <p>Add Device to Group<p> <div ng-controller="AddToGroupCtrl" >
+   <div class="row" >
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+         <input type="text" class="form-control" placeholder="Noide ID" ng-model="network.nodeid">
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+     <input type="text" class="form-control" placeholder="Endpoint" ng-model="network.endpoint">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+     <input type="text" class="form-control" placeholder="Groupid" ng-model="network.groupid">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+     <input type="text" class="form-control" placeholder="Group Name" ng-model="network.groupname">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <button type="button" class="btn btn-info" ng-click="takeOn(network)">Add Group an Target </button>
+  </div><!-- /.row -->
+</br>
+
   <br ng-hide="state"> 
-     <p ng-show="state"> Take hue {{state}} !</p>
-  </br>
+  
 </br>
 </div>
 </div>
 </div>
-</div>
-</div>
+<!--
+<div class="panel panel-default" ng-show="hues">
+  <div class="panel-heading">Grouping Devices</div>
+  <div class="panel-body">
+    Panel content
+  </div>
+</div>-->
+

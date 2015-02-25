@@ -20,14 +20,9 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
 })
   .controller('SendHueStateCtrl',['$scope', '$http', function ($scope,$http) {
 
-     $scope.update = function(network) {
-        $scope.master = angular.copy(network);
-      };
-
     $scope.takeOn = function(network) {
         var nodeid = angular.copy(network).nodeid;
         var ep = angular.copy(network).endpoint;
-
         $scope.state = 'ON';
         $http.get( host + "/hue/state/" + nodeid + "/"+ ep +"/0/1").success(function(data) {
          });
@@ -42,6 +37,7 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
     };
 
     $scope.openNetwork = function(){
+      console.log("openNetwork");
        $http.get(host + "/network/open").success(function(data) {
          });
     };
@@ -58,4 +54,34 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
         $scope.nodeid = network;
       };
 
-  }]);
+  }])
+.controller('SendToGroupCtrl',['$scope', '$http', function ($scope,$http) {
+
+    $scope.takeOn = function(network) {
+        var nodeid = angular.copy(network).nodeid;
+        var ep = angular.copy(network).endpoint;
+        $scope.state = 'ON';
+        $http.get( host + "/hue/state/" + nodeid + "/"+ ep +"/1/1").success(function(data) {
+         });
+    };
+
+     $scope.takeOff = function(network) {
+        var nodeid = angular.copy(network).nodeid;
+        var ep = angular.copy(network).endpoint;
+        $scope.state = 'OFF';
+        $http.get( host + "/hue/state/" + nodeid + "/"+ ep +"/1/0").success(function(data) {
+         });
+    };
+}])
+.controller('AddToGroupCtrl',['$scope', '$http', function ($scope,$http) {
+
+    $scope.AddtoGroup = function(network) {
+        var nodeid = angular.copy(network).nodeid;
+        var ep = angular.copy(network).endpoint;
+        var groupid = angular.copy(network).groupid;
+        var groupname = angular.copy(network).groupname;
+        $scope.state = 'ON';
+        $http.get( host + "/group/" + nodeid + "/"+ ep +"/0/"+groupid+"/"+groupname).success(function(data) {
+         });
+    };
+}]);

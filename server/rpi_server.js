@@ -129,6 +129,13 @@ router.get('/hue/:id', function(req, res) {
 	});
 });
 
+router.get('/group/:nodeid/:endpoint/:sendmode/:gpid/:gpname', function(req,res,next){
+	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
+			+ req.params.sendmode + "/" + req.params.gpid +"/" + req.params.gpname;
+	client.write('AddToGroup/' + payload);
+});
+
+
 router.get('/devices', function(req, res, next) {
 	client.write('UpdateList');
 	console.log('GET /devices');
