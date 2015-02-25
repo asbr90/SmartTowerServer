@@ -5,7 +5,7 @@ var net = require('net');
 var Forecast = require('forecast');
 var cors = require('express-cors')
 
-var HOST = '192.168.1.114';
+var HOST = '192.168.0.12';
 var PORT = 51717;
 var client = new net.Socket(); // connect to Hardware-Layer
 
@@ -56,27 +56,13 @@ router.get('/weather', function(req, res, next) {
 			return console.dir(err);
 		res.json({
 			weather : weather.currently
-		});
+		});	
 	});
-		next();
 });
 
 router.get('/', function(req, res) {
 	res.json({
 		message : 'Smart Towert API!'
-	});
-});
-
-app.post('/network', function(req, res) {
-	res.json({
-		message : 'network information'
-	});
-});
-
-router.get('/network/scan', function(req, res) {
-
-	res.json({
-		message : 'Scan network information'
 	});
 });
 
@@ -87,11 +73,6 @@ router.get('/network/open', function(req, res) {
 	});
 });
 
-router.get('/hue', function(req, res) {
-	res.json({
-		message : 'List of hues'
-	});
-});
 
 router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
 		function(req, res, next) {
@@ -123,23 +104,34 @@ router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
 				
 		});
 
-router.get('/hue/:id', function(req, res) {
-	res.json({
-		message : 'Get information of hue with id: ' + req.params.id
-	});
-});
-
 router.get('/group/:nodeid/:endpoint/:sendmode/:gpid/:gpname', function(req,res,next){
+	console.log('Add Device to Group');
 	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 			+ req.params.sendmode + "/" + req.params.gpid +"/" + req.params.gpname;
 	client.write('AddToGroup/' + payload);
+	next();
 });
 
+router.get('/group/:nodeid/:endpoint/:sendmode/:gpid', function(req,res,next){
+	console.log('Add Device to Group');
+	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
+			+ req.params.sendmode + "/" + req.params.gpid ;
+	client.write('RemoveFromGroup/' + payload);
+	next();
+});
+
+router.delete('/group/:nodeid/:endpoint/:sendmode/:gpid/', function(req,res,next){
+	consolose.log("Delete");
+	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
+			+ req.params.sendmode + "/" + req.params.gpid;
+			client.write(payload);
+	next();
+});
 
 router.get('/devices', function(req, res, next) {
 	client.write('UpdateList');
 	console.log('GET /devices');
-	
+	var issend = false;
 	client.on('data', function(data) {
 		var values = String(data);
 		var a = values.split("\r\n");
@@ -159,11 +151,13 @@ router.get('/devices', function(req, res, next) {
 					+ "\"}");
 			if ((i + 1) < (a.length - 1))
 				jsonResponse = jsonResponse.concat(",");
-
-		}3000
-
+		}
+	
 		jsonResponse = jsonResponse.concat("]");
-		res.json(JSON.parse(jsonResponse));
+		if(!issend){
+				res.json(JSON.parse(jsonResponse));
+				issend = true;
+			}
 	});			
 });
 
@@ -184,8 +178,6 @@ router.get('/socket/:state/:nodeid/:endpoint/:sendmode/:value', function(req,
 client.connect(PORT, HOST, function() {
 	console.log('CONNECTED TO: ' + HOST + ':' + PORT);
 });
-// Add a 'data' event handler for the client socket
-// data is what the server sent to this socket
 
 // Add a 'close' event handler for the client socket
 client.on('close', function() {
