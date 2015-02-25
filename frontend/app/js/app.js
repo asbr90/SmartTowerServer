@@ -12,9 +12,8 @@ angular.module('SmartTower', ['ngAnimate','ngRoute',  'HueServices'])
       .when('/weather', { templateUrl: 'partials/weather.html' })
       .otherwise({ redirectTo: '/'});
   }).controller('HueListCtrl', function($scope, $http) {
-  $http.get('http://localhost:3000/api/hue').success(function(data) {
-      console.log(data);
-      $scope.hue = data;
+  $http.get('http://192.168.0.12:3000/api/devices').success(function(data) {
+      $scope.hues = data;
     });
 })
   .controller('WeatherCtl', function($scope, $http){

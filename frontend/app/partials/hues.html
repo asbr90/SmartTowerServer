@@ -1,18 +1,29 @@
-<div class="container-fluid">
-<div class="row">
-<div class="col-md-2">
-<!--Sidebar content-->
-Search: <input ng-model="query">
-Sort by:
-<option value="name">Alphabetical</option>
-<option value="age">Newest</option>
-</select>
-</div>
-<div class="col-md-10">
 <!--Body content-->
  <div  ng-controller="HueListCtrl">
-      <p> Hues in network <br>{{hue.message}}</br></p>
-    </div>
-</div>
-</div>
-</div>
+     <div class="container">
+
+<h3>Joined Devices</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Node ID</th>
+      <th>Endpoint</th>
+      <th>Device ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="hue in hues">
+      <td>{{ hue.nodeid }}</td>
+      <td>{{ hue.endpoint }}</td>
+      <td>{{ hue.deviceid }}</td>
+    </tr>
+  </tbody>
+</table>
+ </div>
+ <br>
+      	<h2>Change Hue state:</h2>
+        <button type="button" class="btn btn-success">ON </button>
+        <button type="button" class="btn btn-danger">OFF</button>
+   </br>
+  </div>
