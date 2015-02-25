@@ -74,14 +74,16 @@ app.post('/network', function(req, res) {
 });
 
 router.get('/network/scan', function(req, res) {
+
 	res.json({
 		message : 'Scan network information'
 	});
 });
 
 router.get('/network/open', function(req, res) {
+	client.write('OpenNetwork');
 	res.json({
-		message : 'Open network information'
+		message : 'Open network for 60s'
 	});
 });
 
@@ -153,15 +155,9 @@ router.get('/devices', function(req, res, next) {
 
 		}3000
 
-		console.log('JSON',jsonResponse);
 		jsonResponse = jsonResponse.concat("]");
-		//TODO asnychrone response not work. Need it for dynmical calls
 		res.json(JSON.parse(jsonResponse));
-	});	
-	var DefjsonResponse = " [{ \"nodeid\": \"05A3\", \"endpoint\": \"0B\" ,\"deviceid\": \"0210\"},{\"nodeid\": \"30A5\", \"endpoint\": \"0B\" ,\"deviceid\": \"0210\"},{\"nodeid\": \"3A4F\", \"endpoint\": \"01\" ,\"deviceid\": \"0009\"}]";//Default Values
-
-	//res.json(JSON.parse(DefjsonResponse));
-		
+	});			
 });
 
 router.get('/socket/:state/:nodeid/:endpoint/:sendmode/:value', function(req,

@@ -2,8 +2,22 @@
  <div  ng-controller="HueListCtrl">
      <div class="container">
 
+<div ng-hide="hues" class="ng-hide">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Hint</h3>
+  </div>
+  <div class="panel-body">
+    No devices connected to Network. Open the network and join devices.
+    <div>
+      <button type="button" class="btn btn-info" ng-click="openNetwork()">Open Network </button>
+    </div>
+  </div>
+  </div>
 
-<div class="panel panel-default">
+</div>
+
+<div class="panel panel-default" ng-show="hues">
   <div class="panel-heading">Joined Devices</div>
   <div class="panel-body">
     <table class="table table-striped">
@@ -24,43 +38,39 @@
 </table>
  </div>
   </div>
-
-
-<div class="panel panel-default">
+<div class="panel panel-default" >
   <div class="panel-heading">
     <h3 class="panel-title">Change State of Hue</h3>
   </div>
-  <div class="panel-body">
-    
-
-<div ng-controller="SendHueStateCtrl">
+  
+<div ng-controller="SendHueStateCtrl" >
    <div class="row" >
   <div class="col-lg-2">
     <div class="input-group">
       <span class="input-group">
-         <input type="text" class="form-control" placeholder="Noide ID" aria-describedby="basic-addon1">
+         <input type="text" class="form-control" placeholder="Noide ID" ng-model="network.nodeid">
       </span>
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
   <div class="col-lg-2">
     <div class="input-group">
       <span class="input-group">
-      <input type="text" class="form-control" placeholder="Endpoint" aria-describedby="basic-addon">
-       </span>
+     <input type="text" class="form-control" placeholder="Endpoint" ng-model="network.endpoint">
+       <pre>master = {{nodeid }}</pre>
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
  
 </div><!-- /.row -->
 
 <br>
-  <button type="button" class="btn btn-success" ng-click="takeOn()">ON </button>
-  <button type="button" class="btn btn-success" ng-click="takeOff()">Off </button>
-     <br ng-hide="state"> 
+  <button type="button" class="btn btn-success" ng-click="takeOn(network)">ON </button>
+  <button type="button" class="btn btn-danger" ng-click="takeOff(network)">Off </button>
+  <br ng-hide="state"> 
      <p ng-show="state"> Take hue {{state}} !</p>
-     </br>
-   </br>
-   </div>
-  </div>
+  </br>
+</br>
 </div>
 </div>
- </div>
+</div>
+</div>
+</div>
