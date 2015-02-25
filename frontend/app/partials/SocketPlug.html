@@ -1,0 +1,66 @@
+<!--Body content-->
+ <div  ng-controller="SocketListCtrl">
+     <div class="container">
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Joined Devices</div>
+  <div class="panel-body">
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Node ID</th>
+      <th>Endpoint</th>
+      <th>Device ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="socket in sockets">
+      <td>{{ socket.nodeid }}</td>
+      <td>{{ socket.endpoint }}</td>
+      <td>{{ socket.deviceid }}</td>
+    </tr>
+  </tbody>
+</table>
+ </div>
+  </div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Change State of Socket Plug</h3>
+  </div>
+  <div class="panel-body">
+    
+
+<div ng-controller="SendSocketStateCtrl">
+   <div class="row" >
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+         <input type="text" class="form-control" placeholder="Noide ID" aria-describedby="basic-addon1">
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+      <input type="text" class="form-control" placeholder="Endpoint" aria-describedby="basic-addon">
+       </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+ 
+</div><!-- /.row -->
+
+<br>
+  <button type="button" class="btn btn-success" ng-click="On()">ON </button>  
+  <button type="button" class="btn btn-success" ng-click="Off()">OFF </button>
+     <br ng-hide="state"> 
+     <p ng-show="state"> Take Socket Plug {{state}} !</p>
+     </br>
+   </br>
+   </div>
+  </div>
+</div>
+</div>
+ </div>

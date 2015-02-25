@@ -5,7 +5,7 @@ var net = require('net');
 var Forecast = require('forecast');
 var cors = require('express-cors')
 
-var HOST = '127.0.0.1';
+var HOST = '192.168.1.114';
 var PORT = 51717;
 var client = new net.Socket(); // connect to Hardware-Layer
 
@@ -23,7 +23,7 @@ var forecast = new Forecast({
 });
 
 app.use(cors({
-	allowedOrigins : [ 'http://localhost:8001' ]
+	allowedOrigins : [ 'http://localhost:8001','http://localhost:3000' ]
 }))
 
 app.use(bodyParser.urlencoded({
@@ -39,7 +39,7 @@ var router = express.Router(); // get an instance of the express Router
 
 router.use(function(req, res, next) {
 	// do logging
-	console.log('Received Request', req.query);
+	console.log('Received Request', req.originalUrl);
 	next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -50,7 +50,7 @@ forecast.get([ 50.5833, 8.65 ], true, function(err, weather) {
 	console.dir(weather);
 });
 
-router.get('/weather', function(req, res) {
+router.get('/weather', function(req, res, next) {
 	forecast.get([ 50.5833, 8.65 ], true, function(err, weather) {
 		if (err)
 			return console.dir(err);
@@ -58,6 +58,7 @@ router.get('/weather', function(req, res) {
 			weather : weather.currently
 		});
 	});
+		next();
 });
 
 router.get('/', function(req, res) {
@@ -91,7 +92,7 @@ router.get('/hue', function(req, res) {
 });
 
 router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
-		function(req, res) {
+		function(req, res, next) {
 
 			var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 					+ req.params.value + "/" + req.params.sendmode;
@@ -117,6 +118,7 @@ router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
 					message : 'HueSaturation/' + payload
 				});
 			}
+				
 		});
 
 router.get('/hue/:id', function(req, res) {
@@ -125,7 +127,7 @@ router.get('/hue/:id', function(req, res) {
 	});
 });
 
-router.get('/devices', function(req, res) {
+router.get('/devices', function(req, res, next) {
 	client.write('UpdateList');
 	console.log('GET /devices');
 	
@@ -149,29 +151,31 @@ router.get('/devices', function(req, res) {
 			if ((i + 1) < (a.length - 1))
 				jsonResponse = jsonResponse.concat(",");
 
-		}
+		}3000
 
 		console.log('JSON',jsonResponse);
 		jsonResponse = jsonResponse.concat("]");
 		//TODO asnychrone response not work. Need it for dynmical calls
-//		res.json(JSON.parse(jsonResponse));
-	});
-	var DefjsonResponse = " [{ \"nodeid\": \"05A3\", \"endpoint\": \"0B\" ,\"deviceid\": \"0210\"}]";//Default Values
-	res.json(JSON.parse(DefjsonResponse));
+		res.json(JSON.parse(jsonResponse));
+	});	
+	var DefjsonResponse = " [{ \"nodeid\": \"05A3\", \"endpoint\": \"0B\" ,\"deviceid\": \"0210\"},{\"nodeid\": \"30A5\", \"endpoint\": \"0B\" ,\"deviceid\": \"0210\"},{\"nodeid\": \"3A4F\", \"endpoint\": \"01\" ,\"deviceid\": \"0009\"}]";//Default Values
+
+	//res.json(JSON.parse(DefjsonResponse));
+		
 });
 
 router.get('/socket/:state/:nodeid/:endpoint/:sendmode/:value', function(req,
-		res) {
+		res, next) {
 	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 			+ req.params.value + "/" + req.params.sendmode;
 
 	if (req.params.state === "info") {
 		client.write('SocketInformation/' + payload);
 		// need response from socket
-	} else if (req.params.state === "set") {
+	} else if (req.params.state === "state") {
 		client.write('SocketState/' + payload);
 	}
-
+	next();
 });
 
 client.connect(PORT, HOST, function() {
