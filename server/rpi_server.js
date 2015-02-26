@@ -76,7 +76,7 @@ router.get('/network/open', function(req, res) {
 
 router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
 		function(req, res, next) {
-
+			console.log("bla");
 			var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 					+ req.params.value + "/" + req.params.sendmode;
 
@@ -100,8 +100,19 @@ router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
 				res.json({
 					message : 'HueSaturation/' + payload
 				});
-			}
-				
+			}	
+			next();			
+		});
+
+
+router.get('/hue/colorXY/:nodeid/:endpoint/:sendmode/:ratex/:ratey',
+		function(req, res, next) {
+			console.log("Change XY Color")
+			var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
+					 + req.params.sendmode + "/" +req.params.ratex + "/" +req.params.ratey;
+
+			client.write('HueColorXY/' + payload);
+			next();
 		});
 
 router.get('/group/:nodeid/:endpoint/:sendmode/:gpid/:gpname', function(req,res,next){
@@ -113,7 +124,7 @@ router.get('/group/:nodeid/:endpoint/:sendmode/:gpid/:gpname', function(req,res,
 });
 
 router.get('/group/:nodeid/:endpoint/:sendmode/:gpid', function(req,res,next){
-	console.log('Add Device to Group');
+	console.log('Remove Device to Group');
 	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 			+ req.params.sendmode + "/" + req.params.gpid ;
 	client.write('RemoveFromGroup/' + payload);
