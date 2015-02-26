@@ -86,38 +86,50 @@
   </div><!-- /.row -->
 </br>
 
+<div ng-controller="AddToGroupCtrl" >
 <br>
-  <p>Add Device to Group<p> <div ng-controller="AddToGroupCtrl" >
+  <p>Add Device to Group<p> 
    <div class="row" >
   <div class="col-lg-2">
     <div class="input-group">
       <span class="input-group">
-         <input type="text" class="form-control" placeholder="Noide ID" ng-model="network.nodeid">
+         <input type="text" class="form-control" placeholder="Noide ID" ng-model="ng.nodeid">
       </span>
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
   <div class="col-lg-2">
     <div class="input-group">
       <span class="input-group">
-     <input type="text" class="form-control" placeholder="Endpoint" ng-model="network.endpoint">
+     <input type="text" class="form-control" placeholder="Endpoint" ng-model="ng.endpoint">
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
   <div class="col-lg-2">
     <div class="input-group">
       <span class="input-group">
-     <input type="text" class="form-control" placeholder="Groupid" ng-model="network.groupid">
+     <input type="text" class="form-control" placeholder="Groupid" ng-model="ng.groupid">
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
   <div class="col-lg-2">
     <div class="input-group">
       <span class="input-group">
-     <input type="text" class="form-control" placeholder="Group Name" ng-model="network.groupname">
+     <input type="text" class="form-control" placeholder="Group Name" ng-model="ng.groupname">
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
-  <button type="button" class="btn btn-info" ng-click="takeOn(network)">Add Group an Target </button>
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+     <input type="text" class="form-control" placeholder="Color" ng-model="ng.color">
+    </div><!-- /input-group -->
+  </div>
+ 
   </div><!-- /.row -->
+  <br>
+ <button type="button" class="btn btn-info" ng-click="AddtoGroup(ng)">Add Group an Target </button>
+ <button type="button" class="btn btn-warning" ng-click="ChangeColor(ng)">Change Color </button>
+ <button type="button" class="btn btn-warning" ng-click="ChangeGroupColor(ng)">Change Group Color </button>
 </br>
-
+</br>
+</div>
   <br ng-hide="state"> 
   
 </br>

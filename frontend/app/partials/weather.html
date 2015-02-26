@@ -1,5 +1,41 @@
-<br>
-  <div  ng-controller="WeatherCtl">
-      <p> Today weather <br>{{weather}}</br></p>
-    </div>
-</br>
+<div  ng-controller="WeatherCtl">
+<div class="panel panel-default">
+  <div class="panel-heading"><p>Current weather data for {{weather.name}} </p> </div>
+</div>
+<div id="grid" data-columns>
+	<div class="column size-1of3">
+		 <a href="#/weather" class="thumbnail" ng-click="current()">
+		 		<div>
+			<p>Current Weather</p>
+		</div>
+		<div ><h3>{{weather.weather[0].description}}</h3></div>
+		 <div >Windspeed: {{weatherspeed}} km/h</div>
+		 <div >Cloudy: {{weatherCloudsProcent}}%</div>
+		 	<a>
+	</div>
+	<div class="column size-1of3">
+		<a href="#/weather" class="thumbnail">
+		<div><p>Tommorow Forecast</p></div>
+		<div> <h3>{{forecastDescription}}</h3></div>
+		<div>Temperature: {{forecastDaily}} °</div>
+		<div>Day: {{forecastDate}}</div>
+		 	<a>
+	</div>
+
+	<div class="column size-1of3">
+		<a href="#/weather" class="thumbnail">
+		 <div><p>Day After Tomorrow</p></div>
+		 <div> <h3>{{weatherDATDescription}}</h3></div>
+		<div>Temperature: {{weatherDATDaily}} °</div>
+		<div>Day: {{weatherDATforecastDate}}</div>
+
+		 	<a>
+		<div></div>
+	<a>
+	
+	</div>
+</div>
+
+  </div>
+ </div>
+  </div>	

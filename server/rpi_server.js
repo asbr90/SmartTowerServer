@@ -2,25 +2,12 @@ var express = require('express'); // call express
 var app = express(); // define our app using express
 var bodyParser = require('body-parser');
 var net = require('net');
-var Forecast = require('forecast');
-var cors = require('express-cors')
+var cors = require('express-cors');
+var request = require('request');
 
 var HOST = '192.168.0.12';
 var PORT = 51717;
 var client = new net.Socket(); // connect to Hardware-Layer
-
-// Initialize
-var forecast = new Forecast({
-	service : 'forecast.io',
-	key : '88e750b2992857ef17c874e812bc4ad0',
-	units : 'celcius', // Only the first letter is parsed
-	cache : true, // Cache API requests?
-	ttl : { // How long to cache requests. Uses syntax from moment.js:
-		// http://momentjs.com/docs/#/durations/creating/
-		minutes : 27,
-		seconds : 45
-	}
-});
 
 app.use(cors({
 	allowedOrigins : [ 'http://localhost:8001','http://localhost:3000' ]
@@ -43,21 +30,31 @@ router.use(function(req, res, next) {
 	next(); // make sure we go to the next routes and don't stop here
 });
 
-// Retrieve weather information, ignoring the cache
-forecast.get([ 50.5833, 8.65 ], true, function(err, weather) {
-	if (err)
-		return console.dir(err);
-	console.dir(weather);
-});
 
-router.get('/weather', function(req, res, next) {
-	forecast.get([ 50.5833, 8.65 ], true, function(err, weather) {
-		if (err)
-			return console.dir(err);
-		res.json({
-			weather : weather.currently
-		});	
+router.get('/weather/:time', function(req, res, next) {
+
+	if(req.params.time === "current"){
+	request.get('http://api.openweathermap.org/data/2.5/weather?q=Lollar&mode=json&units=metric', function (error, response, body) {
+	  if (!error && response.statusCode == 200) {
+	  //  console.log(body) // Show the HTML for the Google homepage
+	    res.send(body); 
+	  }   
 	});
+}else if(req.params.time === "hourly"){
+		request.get('http://api.openweathermap.org/data/2.5/forecast?q=Lollar', function (error, response, body) {
+		  if (!error && response.statusCode == 200) {
+		//    console.log(body) // Show the HTML for the Google homepage
+		    res.send(body); 
+		  }   
+	});
+}else if(req.params.time === "daily"){
+	request.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Lollar&mode=json&units=metric&cnt=7', function (error, response, body) {
+	  if (!error && response.statusCode == 200) {
+	    console.log(body) // Show the HTML for the Google homepage
+	    res.send(body); 
+	  }   
+	});
+	}
 });
 
 router.get('/', function(req, res) {
@@ -101,7 +98,6 @@ router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
 					message : 'HueSaturation/' + payload
 				});
 			}	
-			next();			
 		});
 
 
