@@ -56,26 +56,31 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
       $scope.weatherDAT = data;
       $scope.weatherDATDaily = data.list[2].temp.day;
       $scope.weatherDATDescription = data.list[2].weather[0].description;
-         var date = new Date(data.list[2].dt*1000);
+      var date = new Date(data.list[2].dt*1000);
       $scope.weatherDATforecastDate = String(date);
-    });
+      $scope.DATcondition = data.list[2].weather[0].id;
 
-    $http.get('http://localhost:3000/api/weather/daily').success(function(data) {
       $scope.forecastDaily = data.list[1].temp.day;
       $scope.forecastDescription = data.list[1].weather[0].description;
-      var date = new Date(data.list[1].dt*1000);
-      $scope.forecastDate = String(date);
+      var dateD = new Date(data.list[1].dt*1000);
+      $scope.forecastDate = String(dateD);
+      $scope.Tcondition = data.list[1].weather[0].id;
     });
 
     $scope.current = function() {
-      console.log("Change color by weater");
-      var color = "a9";
-      if($scope.condition == 804 || 803 || 802 || 801 || 800) //then clouds
-        color = "a9"
-
-      $http.get( host + "/hue/color/0001/0B/1/"+color).success(function(data) {
+        $http.get( host + "/bulb/0001/0B/1/"+$scope.condition).success(function(data) {
      });
     };
+   $scope.tomorrow = function() {
+          $http.get( host + "/bulb/0001/0B/1/"+$scope.Tcondition).success(function(data) {
+      });
+    };
+
+   $scope.dt = function() {
+        $http.get( host + "/bulb/0001/0B/1/"+$scope.DATcondition).success(function(data) {
+     });
+    };
+
   })
   .controller('AdressCtrl', [ '$scope' , function($scope){
    

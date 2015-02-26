@@ -9,6 +9,15 @@ var HOST = '192.168.0.12';
 var PORT = 51717;
 var client = new net.Socket(); // connect to Hardware-Layer
 
+var thunderstorm = "bf";
+var drizzle = "af";
+var rain = "55";
+var snow = "00";
+var atmosphere = "40";
+var clouds =  "a9";
+var extreme = "cf";
+var additional = "80";
+
 app.use(cors({
 	allowedOrigins : [ 'http://localhost:8001','http://localhost:3000' ]
 }))
@@ -30,31 +39,62 @@ router.use(function(req, res, next) {
 	next(); // make sure we go to the next routes and don't stop here
 });
 
-
 router.get('/weather/:time', function(req, res, next) {
 
 	if(req.params.time === "current"){
 	request.get('http://api.openweathermap.org/data/2.5/weather?q=Lollar&mode=json&units=metric', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
-	  //  console.log(body) // Show the HTML for the Google homepage
 	    res.send(body); 
 	  }   
 	});
 }else if(req.params.time === "hourly"){
 		request.get('http://api.openweathermap.org/data/2.5/forecast?q=Lollar', function (error, response, body) {
 		  if (!error && response.statusCode == 200) {
-		//    console.log(body) // Show the HTML for the Google homepage
 		    res.send(body); 
 		  }   
 	});
 }else if(req.params.time === "daily"){
 	request.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Lollar&mode=json&units=metric&cnt=7', function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
-	    console.log(body) // Show the HTML for the Google homepage
 	    res.send(body); 
 	  }   
 	});
 	}
+});
+
+//set the color on dependency of weather conditions
+router.get('/bulb/:nodeid/:endpoint/:sendmode/:weatherCcondition', function(req,res,next){
+	var condition = req.params.weatherCcondition;
+	var payload = req.params.nodeid + "/" + req.params.endpoint + "/";
+
+	if(condition >= 200 && condition <=232){
+		//Thunderstorm: 
+		payload = payload + thunderstorm + "/";
+	}else if(condition >= 300 && condition <=321){
+		//drizzle: 
+		payload = payload + drizzle + "/";
+	}else  if(condition >= 500 && condition <=531){
+		//rain: 
+		payload = payload + rain + "/";
+	}else if(condition >= 600  && condition <=622){
+		//snow: 
+		payload = payload + snow + "/";
+	}else if(condition >= 701 && condition <=781){
+		//atmosphere: 
+		payload = payload + atmosphere + "/";
+	}else if(condition >= 800 && condition <=804){
+		//clouds: 
+		payload = payload + clouds + "/";
+	}else if(condition >= 900 && condition <=906){
+		//extreme: 
+		payload = payload + extreme + "/";
+	}else if(condition >= 951 && condition <=962){
+		//additional: 
+		payload = payload + additional + "/";
+	}
+	payload += req.params.sendmode;
+
+	client.write('HueColor/' + payload);
 });
 
 router.get('/', function(req, res) {
@@ -73,7 +113,6 @@ router.get('/network/open', function(req, res) {
 
 router.get('/hue/:state/:nodeid/:endpoint/:sendmode/:value',
 		function(req, res, next) {
-			console.log("bla");
 			var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 					+ req.params.value + "/" + req.params.sendmode;
 
@@ -195,10 +234,6 @@ client.on('error', function() {
 	console.log('No available Socket on this port');
 });
 
-// more routes for our API will happen here
-
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
 app.use('/api', router);
 
 // START THE SERVER
