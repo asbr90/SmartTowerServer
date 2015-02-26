@@ -95,6 +95,7 @@ router.get('/bulb/:nodeid/:endpoint/:sendmode/:weatherCcondition', function(req,
 	payload += req.params.sendmode;
 
 	client.write('HueColor/' + payload);
+	next();
 });
 
 router.get('/', function(req, res) {
