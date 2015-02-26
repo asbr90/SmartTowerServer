@@ -7,6 +7,9 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
       .when('/home', {
         templateUrl: 'partials/home.html'
       })
+      .when('/result', {
+        templateUrl: 'partials/result.html'
+      })
       .when('/zigbee',{
         templateUrl: 'partials/zigbee.html'
       })
