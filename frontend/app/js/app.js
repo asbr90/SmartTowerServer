@@ -40,8 +40,20 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
         var nodeid = angular.copy(network).nodeid;
         var ep = angular.copy(network).endpoint;
         $scope.state = 'OFF';
+
         $http.get( host + "/hue/state/" + nodeid + "/"+ ep +"/0/0").success(function(data) {
-         });
+     });
+
+        $scope.changelevel = function(network){
+            var nodeid = angular.copy(network).nodeid;
+            var ep = angular.copy(network).endpoint;
+            var level = angular.copy(network).level;
+
+            $scope.state = 'OFF';
+            $http.get( host + "/hue/level/" + nodeid + "/"+ ep +"/0/"+level).success(function(data) {
+        });
+
+        };
     };
 
     $scope.openNetwork = function(){
@@ -114,6 +126,17 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
     };
 }])
 .controller('AddToGroupCtrl',['$scope', '$http', function ($scope,$http) {
+
+$scope.ChangeGroupLevel = function(network){
+      var nodeid = angular.copy(network).groupid;
+            var ep = angular.copy(network).endpoint;
+            var level = angular.copy(network).level;
+
+            $scope.state = 'OFF';
+            $http.get( host + "/hue/level/" + nodeid + "/"+ ep +"/1/"+level).success(function(data) {
+        });
+
+};
 
 $scope.ChangeColor = function(network){
   var nodeid = angular.copy(network).nodeid;

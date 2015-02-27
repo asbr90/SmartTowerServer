@@ -59,9 +59,16 @@
      <input type="text" class="form-control" placeholder="Endpoint" ng-model="network.endpoint">
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
+    <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+     <input type="text" class="form-control" placeholder="Level" ng-model="network.level">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
    <div>
  <button type="button" class="btn btn-success" ng-click="takeOn(network)">ON </button>
   <button type="button" class="btn btn-danger" ng-click="takeOff(network)">Off </button>
+  <button type="button" class="btn btn-warning" ng-click="changelevel(network)">Level </button>
 </div>
   </div><!-- /.row -->
 
@@ -121,12 +128,18 @@
      <input type="text" class="form-control" placeholder="Color" ng-model="ng.color">
     </div><!-- /input-group -->
   </div>
- 
+  <div class="col-lg-2">
+    <div class="input-group">
+      <span class="input-group">
+     <input type="text" class="form-control" placeholder="level" ng-model="ng.level">
+    </div><!-- /input-group -->
+  </div>
   </div><!-- /.row -->
   <br>
  <button type="button" class="btn btn-info" ng-click="AddtoGroup(ng)">Add Group an Target </button>
  <button type="button" class="btn btn-warning" ng-click="ChangeColor(ng)">Change Color </button>
  <button type="button" class="btn btn-warning" ng-click="ChangeGroupColor(ng)">Change Group Color </button>
+ <button type="button" class="btn btn-danger" ng-click="ChangeGroupLevel(ng)">Change Group Level  </button>
 </br>
 </br>
 </div>
