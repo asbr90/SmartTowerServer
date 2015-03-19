@@ -1,3 +1,5 @@
+var socketClient = require('../service/socket');
+
 var thunderstorm = "bf";
 var drizzle = "af";
 var rain = "55";
@@ -38,7 +40,7 @@ exports.setWeatherHue = function(req,res,next){
 	}
 	payload += req.params.sendmode;
 
-	client.write('HueColor/' + payload);
+	socketClient.client.write('HueColor/' + payload);
 	next();
 };
 
@@ -47,22 +49,22 @@ exports.changeHue = function(req, res, next) {
 			+ req.params.value + "/" + req.params.sendmode;
 
 	if (req.params.state === "color") {
-		client.write('HueColor/' + payload);
+		socketClient.client.write('HueColor/' + payload);
 		res.json({
 			message : 'HueColor/' + payload
 		});
 	} else if (req.params.state === "state") {
-		client.write('HueState/' + payload);
+		socketClient.client.write('HueState/' + payload);
 		res.json({
 			message : 'HueState/' + payload
 		});
 	} else if (req.params.state === "level") {
-		client.write('HueLevel/' + payload);
+		socketClient.client.write('HueLevel/' + payload);
 		res.json({
 			message : 'HueLevel/' + payload
 		});
 	} else if (req.params.state === "saturation") {
-		client.write('HueSaturation/' + payload);
+		socketClient.client.write('HueSaturation/' + payload);
 		res.json({
 			message : 'HueSaturation/' + payload
 		});
@@ -73,6 +75,6 @@ exports.changeXYHue = function(req, res, next) {
 	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
 			 + req.params.sendmode + "/" +req.params.ratex + "/" +req.params.ratey;
 
-	client.write('HueColorXY/' + payload);
+	socketClient.client.write('HueColorXY/' + payload);
 	next();
 };

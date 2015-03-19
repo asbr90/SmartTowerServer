@@ -1,4 +1,4 @@
-var socketClient = require('../service/socket.js');
+var socketClient = require('../service/socket');
 
 exports.AddDeviceToGroup = function(req,res,next){
 	var payload = req.params.nodeid + "/" + req.params.endpoint + "/"
@@ -36,7 +36,7 @@ exports.RemoveGroupFromDevice = function(req,res,next){
 exports.getDevice = function(req, res, next) {
 	console.log('GET /devices');
 	var issend = false;
-
+	console.log(socketClient);
 	if(!socketClient.client){
 		res.status(400).json({
 			message: 'No available Socket on this port'

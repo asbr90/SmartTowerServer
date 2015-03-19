@@ -72,6 +72,7 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
 
     $http.get('http://localhost:3000/api/weather/daily').success(function(data) {
       $scope.weatherDAT = data;
+      console.log(data);
       $scope.weatherDATDaily = data.list[2].temp.day;
       $scope.weatherDATDescription = data.list[2].weather[0].description;
       var date = new Date(data.list[2].dt*1000);

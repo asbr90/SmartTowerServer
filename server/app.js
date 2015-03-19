@@ -3,11 +3,11 @@ var app = express(); // define our app using express
 var bodyParser = require('body-parser');
 var cors = require('express-cors');
 var request = require('request');
-
-var weather = require('./api/weather.js');
-var hue = require('./api/hue.js');
-var zigbee = require('./api/zigbee.js');
-var powersocket = require('./api/powersocket.js');
+var ioSocket = require('./service/socket');
+var weather = require('./api/weather');
+var hue = require('./api/hue');
+var zigbee = require('./api/zigbee');
+var powersocket = require('./api/powersocket');
 
 
 app.use(cors({
@@ -36,7 +36,6 @@ router.get('/', function(req, res) {
 		message : 'Smart Towert API!'
 	});
 });
-
 router.get('/weather/:time', weather.get);
 
 //set the color on dependency of weather conditions
