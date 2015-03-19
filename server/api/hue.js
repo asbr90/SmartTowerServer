@@ -5,7 +5,7 @@ var drizzle = "af";
 var rain = "55";
 var snow = "00";
 var atmosphere = "40";
-var clouds =  "a9";
+var clouds =  "e1";
 var extreme = "cf";
 var additional = "80";
 
@@ -41,7 +41,10 @@ exports.setWeatherHue = function(req,res,next){
 	payload += req.params.sendmode;
 
 	socketClient.client.write('HueColor/' + payload);
-	next();
+	res.status(200).json(
+	{
+		message: "OK" 
+	});
 };
 
 exports.changeHue = function(req, res, next) {
@@ -76,5 +79,8 @@ exports.changeXYHue = function(req, res, next) {
 			 + req.params.sendmode + "/" +req.params.ratex + "/" +req.params.ratey;
 
 	socketClient.client.write('HueColorXY/' + payload);
-	next();
+	res.status(200).json(
+	{
+		message: payload, 
+	})
 };

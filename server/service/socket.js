@@ -1,6 +1,6 @@
 var net = require('net');
 
-var HOST = '192.168.1.128';
+var HOST = '192.168.0.23';
 var PORT = 51717;
 var socketClient = new net.Socket(); 
 exports.client = socketClient;

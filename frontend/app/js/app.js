@@ -1,5 +1,6 @@
 'use strict';
 var host = "http://localhost:3000/api";
+;
 
 angular.module('SmartTower', ['ngAnimate','ngRoute']) 
 .config(function($routeProvider) {
@@ -72,7 +73,6 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
 
     $http.get('http://localhost:3000/api/weather/daily').success(function(data) {
       $scope.weatherDAT = data;
-      console.log(data);
       $scope.weatherDATDaily = data.list[2].temp.day;
       $scope.weatherDATDescription = data.list[2].weather[0].description;
       var date = new Date(data.list[2].dt*1000);
@@ -85,18 +85,30 @@ angular.module('SmartTower', ['ngAnimate','ngRoute'])
       $scope.forecastDate = String(dateD);
       $scope.Tcondition = data.list[1].weather[0].id;
     });
-
-    $scope.current = function() {
-        $http.get( host + "/bulb/0001/0B/1/"+$scope.condition).success(function(data) {
+   $scope.current = function() {
+    $http.get( host + "/hue/colorXY/0001/0B/1/0fff/0190").success(function(data) {
+     });
+    $http.get( host + "/bulb/0001/0B/1/"+$scope.condition).success(function(data) {
      });
     };
    $scope.tomorrow = function() {
-          $http.get( host + "/bulb/0001/0B/1/"+$scope.Tcondition).success(function(data) {
-      });
+    $http.get( host + "/hue/colorXY/0001/0B/1/0fff/0190").success(function(data) {
+    });
+    $http.get( host + "/bulb/0001/0B/1/"+$scope.Tcondition).success(function(data) {
+    });
     };
 
    $scope.dt = function() {
-        $http.get( host + "/bulb/0001/0B/1/"+$scope.DATcondition).success(function(data) {
+   $http.get( host + "/hue/colorXY/0001/0B/1/0fff/0190").success(function(data) {
+     });
+   $http.get( host + "/bulb/0001/0B/1/"+$scope.DATcondition).success(function(data) {
+     });
+    };
+
+    $scope.setWeather = function(condition){
+       $http.get( host + "/hue/colorXY/0001/0B/1/0fff/0190").success(function(data) {
+     });
+        $http.get( host + "/bulb/0001/0B/1/"+condition).success(function(data) {
      });
     };
 
