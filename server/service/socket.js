@@ -1,18 +1,19 @@
 var net = require('net');
 
-var HOST = '192.168.0.12';
+var HOST = '192.168.1.128';
 var PORT = 51717;
-var client = new net.Socket(); // connect to Hardware-Layer
+var socketClient = new net.Socket(); 
+exports.client = socketClient;
 
-client.connect(PORT, HOST, function() {
+socketClient.connect(PORT, HOST, function() {
 	console.log('CONNECTED TO: ' + HOST + ':' + PORT);
 });
 
 // Add a 'close' event handler for the client socket
-client.on('close', function() {
+socketClient.on('close', function() {
 	console.log('Connection closed');
 });
 
-client.on('error', function() {
+socketClient.on('error', function() {
 	console.log('No available Socket on this port');
 });
